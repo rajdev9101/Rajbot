@@ -1,7 +1,5 @@
-# config.py
+import os
 
-# Insert your OpenAI API key here
-OPENAI_API_KEY = ""
-
-# Telegram Bot Token
-BOT_TOKEN = ""
+# Load tokens from environment variables
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
