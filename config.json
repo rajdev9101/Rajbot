@@ -1,0 +1,7 @@
+{
+  "enable_filters": true,
+  "enable_emoji_reply": true,
+  "enable_name_mention": true,
+  "enable_auto_reply": true,
+  "enable_personality_mode": true
+}
