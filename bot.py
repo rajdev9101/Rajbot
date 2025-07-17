@@ -85,7 +85,7 @@ def start_bot():
     app_bot.run_webhook(
         listen="0.0.0.0",
         port=PORT,
-        webhook_url=f"https://your-koyeb-app-name.koyeb.app"
+        webhook_url=f"unable-melisenda-dminemraj-19a84d86.koyeb.app/"
     )
 
 @app.route('/')
