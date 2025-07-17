@@ -1,0 +1,10 @@
+smart_chatbot/
+├── bot.py
+├── filters.json
+├── log_channel.json
+├── static/
+│   └── start_photo.jpg
+├── templates/
+│   └── index.html
+├── requirements.txt
+└── Procfile
