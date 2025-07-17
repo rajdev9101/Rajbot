@@ -4,7 +4,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, fil
 from flask import Flask
 import json, os, logging
 
-TOKEN = "7777252416:7777252416:AAFtLx4YhHRFrBkKWmn-Gk6ZQgaPEiP-7bQ"
+TOKEN = "7777252416:AAGnWZmhocENFeVkCRMevEPjvDWg8Z25ecg"
 PORT = 8080
 
 app = Flask(__name__)
