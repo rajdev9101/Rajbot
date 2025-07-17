@@ -1,26 +1,23 @@
 # don't remove credit @raj_dev_01
 from telegram import Update, InputFile
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
-from flask import Flask
-import json, os, logging
+import json, os
 
 TOKEN = "7777252416:AAGnWZmhocENFeVkCRMevEPjvDWg8Z25ecg"
 PORT = 8080
-
-app = Flask(__name__)
+WEBHOOK_URL = "https://unable-melisenda-dminemraj-19a84d86.koyeb.app"
 
 # Load log channel
 with open("log_channel.json", "r") as f:
     LOG_CHANNEL_ID = int(json.load(f)["log_channel_id"])
 
 # Load filters
+FILTERS = {}
 if os.path.exists("filters.json"):
     with open("filters.json", "r") as f:
         FILTERS = json.load(f)
-else:
-    FILTERS = {}
 
-# AI QnA dummy database
+# Dummy QA
 QA = {
     "narendra modi": "Narendra Modi is the Prime Minister of India.",
     "raj": "Raj is the creator of this bot. Follow @raj_dev_01 ❤️",
@@ -56,41 +53,32 @@ async def set_filter(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def auto_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = update.message.text.lower()
-    # Check filters
     for k, v in FILTERS.items():
         if k in msg:
             await update.message.reply_text(v)
             return
-    # Check AI-style QnA
     for q, a in QA.items():
         if q in msg:
             await update.message.reply_text(a)
             return
-
-    # Log unhandled messages
     await context.bot.send_message(LOG_CHANNEL_ID, f"New unhandled message:\n{update.message.text}")
 
-# Telegram Bot start
 def start_bot():
-    app_bot = ApplicationBuilder().token(TOKEN).build()
+    app = ApplicationBuilder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("help", help_cmd))
+    app.add_handler(CommandHandler("ping", ping))
+    app.add_handler(CommandHandler("settings", settings))
+    app.add_handler(CommandHandler("raj", raj_cmd))
+    app.add_handler(CommandHandler("filter", set_filter))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, auto_reply))
 
-    app_bot.add_handler(CommandHandler("start", start))
-    app_bot.add_handler(CommandHandler("help", help_cmd))
-    app_bot.add_handler(CommandHandler("ping", ping))
-    app_bot.add_handler(CommandHandler("settings", settings))
-    app_bot.add_handler(CommandHandler("raj", raj_cmd))
-    app_bot.add_handler(CommandHandler("filter", set_filter))
-    app_bot.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, auto_reply))
-
-    app_bot.run_webhook(
+    app.run_webhook(
         listen="0.0.0.0",
         port=PORT,
-        webhook_url=f"https://unable-melisenda-dminemraj-19a84d86.koyeb.app/webhook"
+        webhook_url=WEBHOOK_URL
     )
-
-@app.route('/')
-def home():
-    return "Bot Running — @raj_dev_01"
 
 if __name__ == "__main__":
     start_bot()
+    
